@@ -1,0 +1,59 @@
+@page "/project"
+
+@using MySql.Data;
+@using MySql.Data.MySqlClient;
+@using System.Data;
+
+@using Data;
+
+@inject Database DBConnect
+
+<div class="container-fluid">
+    <div class="d-flex flex-row">
+        <table class= "table table-striped table-light">
+            <thead>
+                <tr>
+                    <th scope="col">pro_id</th>
+                    <th scope="col">pro_name</th>
+                    <th scope="col">pro_price</th>
+                    <th scope="col">pro_amount</th>
+                        
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in dtproject.Rows)
+                {
+                    string proj_id = row["proj_id"].ToString();
+                    string proj_name = row["proj_name"].ToString();
+                    string proj_type = row["proj_type"].ToString();
+                    string proj_sts = row["proj_sts"].ToString();
+
+                    <tr>
+                        <th>@proj_id</th>
+                        <th>@proj_name</th>
+                        <th>@proj_type</th>
+                        <th>@proj_sts</th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@code {
+    DataTable dtproject = new DataTable();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SomeStartupTask();
+        dtproject = DBConnect.GetProjectData();
+    }
+    Task SomeStartupTask()
+    {
+        return Task.CompletedTask;
+    }
+}
+
+
+

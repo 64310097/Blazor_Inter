@@ -1,0 +1,58 @@
+@page "/department"
+
+@using MySql.Data;
+@using MySql.Data.MySqlClient;
+@using System.Data;
+
+@using BlazorMySQL.Data;
+
+@inject Database DBConnect
+
+<div class="container-fluid">
+    <div class="d-flex flex-row">
+        <table class="table table-striped table-light">
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+            
+                    <th scope="col">name</th>
+            
+                    <th scope="col">salary</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (DataRow row in dtdepartment.Rows)
+                {
+                    string dep_id = row["dep_id"].ToString();
+       
+                    string dep_name = row["dep_name"].ToString();
+
+                    string dep_salary = row["dep_salary"].ToString();
+
+                    <tr>
+                        <td>@dep_id</td>
+                        <td>@dep_name</td>
+                        <td>@dep_salary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div  class="back"href="/project"> back</div>
+@code {
+    DataTable dtdepartment = new DataTable();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SomeStartupTask();
+        dtdepartment = DBConnect.GetDepartmentData();
+    }
+
+    Task SomeStartupTask()
+    {
+        return Task.CompletedTask;
+    }
+}
